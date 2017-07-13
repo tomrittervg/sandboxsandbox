@@ -1,0 +1,14 @@
+ACG
+
+AllocateRWX
+         Could not allocate page (0x677): The operation was blocked as the process prohibits dynamic code generation.
+AllocateRW
+AllocateRX
+         Could not allocate page (0x677): The operation was blocked as the process prohibits dynamic code generation.
+AllocateX
+         Could not allocate page (0x677): The operation was blocked as the process prohibits dynamic code generation.
+AllocateR
+AllocateRW_Then_RX
+         Could not reallocate page (0x677): The operation was blocked as the process prohibits dynamic code generation.
+
+Press enter to exit
