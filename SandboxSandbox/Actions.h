@@ -5,6 +5,8 @@
 
 typedef void(__stdcall funcptr)(void);
 
+void All_Allocation_Actions();
+
 void AllocateRWX();
 void AllocateRW();
 void AllocateRX();

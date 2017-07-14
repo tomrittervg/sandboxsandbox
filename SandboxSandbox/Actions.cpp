@@ -1,6 +1,16 @@
 #include "stdafx.h"
 #include "Actions.h"
 
+void All_Allocation_Actions() {
+	AllocateRWX();
+	AllocateRW();
+	AllocateRX();
+	AllocateX();
+	AllocateR();
+	AllocateRW_Then_RX();
+}
+// ==========================================================================
+// ==========================================================================
 void AllocateRWX()
 {
 	printf("%s\n", __FUNCTION__);
@@ -14,10 +24,8 @@ void AllocateRWX()
 		LPSTR pagePtr = (LPSTR)page;
 		pagePtr[0] = 0x42;
 	}
-	else {
-		DWORD errorCode = GetLastError();
-		wprintf(L"\t Could not allocate page (0x%x): %s\n", errorCode, FormatError(errorCode));
-	}
+	else 
+		GET_ERROR_AND_PRINT("allocate page");
 }
 // ==========================================================================
 void AllocateR()
@@ -43,10 +51,8 @@ void AllocateR()
 			wprintf(L"\t ERROR: Somehow we were able to write to a read-only page.\n");
 		}
 	}
-	else {
-		DWORD errorCode = GetLastError();
-		wprintf(L"\t Could not allocate page (0x%x): %s\n", errorCode, FormatError(errorCode));
-	}
+	else
+		GET_ERROR_AND_PRINT("allocate page");
 }
 // ==========================================================================
 void AllocateX()
@@ -72,10 +78,8 @@ void AllocateX()
 			wprintf(L"\t ERROR: Somehow we were able to write to a execute-only page.\n");
 		}
 	}
-	else {
-		DWORD errorCode = GetLastError();
-		wprintf(L"\t Could not allocate page (0x%x): %s\n", errorCode, FormatError(errorCode));
-	}
+	else 
+		GET_ERROR_AND_PRINT("allocate page");
 }
 // ==========================================================================
 void AllocateRX()
@@ -101,10 +105,8 @@ void AllocateRX()
 			wprintf(L"\t ERROR: Somehow we were able to write to a readexecute-only page.\n");
 		}
 	}
-	else {
-		DWORD errorCode = GetLastError();
-		wprintf(L"\t Could not allocate page (0x%x): %s\n", errorCode, FormatError(errorCode));
-	}
+	else 
+		GET_ERROR_AND_PRINT("allocate page");
 }
 // ==========================================================================
 void AllocateRW()
@@ -132,10 +134,8 @@ void AllocateRW()
 			wprintf(L"\t ERROR: Somehow we were able to execute a readwrite-only page.\n");
 		}
 	}
-	else {
-		DWORD errorCode = GetLastError();
-		wprintf(L"\t Could not allocate page (0x%x): %s\n", errorCode, FormatError(errorCode));
-	}
+	else 
+		GET_ERROR_AND_PRINT("allocate page");
 }
 // ==========================================================================
 void AllocateRW_Then_RX()
@@ -149,19 +149,15 @@ void AllocateRW_Then_RX()
 
 	if (page != NULL) {
 		DWORD oldProtect;
-		bool success = VirtualProtect(
+		BOOL success = VirtualProtect(
 			page,
 			100,
 			PAGE_EXECUTE_READ,
 			(PDWORD)&oldProtect);
 		
-		if(!success) {
-			DWORD errorCode = GetLastError();
-			wprintf(L"\t Could not reallocate page (0x%x): %s\n", errorCode, FormatError(errorCode));
-		}
+		if(!success) 
+			GET_ERROR_AND_PRINT("reallocate page");
 	}
-	else {
-		DWORD errorCode = GetLastError();
-		wprintf(L"\t Could not initially allocate page (0x%x): %s\n", errorCode, FormatError(errorCode));
-	}
+	else 
+		GET_ERROR_AND_PRINT("initially allocate page");
 }

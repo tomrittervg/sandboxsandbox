@@ -2,25 +2,27 @@
 #include "Mitigations.h"
 
 // ========================================
-void ACG()
+void Arbitrary_Code_Guard(bool on)
 {
-	printf("%s\n", __FUNCTION__);
+	printf("%s: %s\n", __FUNCTION__, on ? "On" : "Off");
 
 	PROCESS_MITIGATION_DYNAMIC_CODE_POLICY policy;
-	policy.Flags = 0x01;
-	bool success = SetProcessMitigationPolicy(
+	if(on)
+		policy.Flags = 0x01;
+	else
+		policy.Flags = 0x00;
+	
+	BOOL success = SetProcessMitigationPolicy(
 		ProcessDynamicCodePolicy,
 		&policy,
 		sizeof(policy)
 	);
 
-	if (!success) {
-		DWORD errorCode = GetLastError();
-		wprintf(L"\t Could not set mitigation (0x%x): %s\n", errorCode, FormatError(errorCode));
-	}
+	if (!success)
+		GET_ERROR_AND_PRINT("set mitigation");
 }
 // ========================================
 void ApplyMitigations()
 {
-	ACG();
+	Arbitrary_Code_Guard(true);
 }

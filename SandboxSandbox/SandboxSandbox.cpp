@@ -4,19 +4,16 @@
 
 int main()
 {
-	ApplyMitigations();
-
+	Arbitrary_Code_Guard(true);
 	printf("\n");
+	All_Allocation_Actions();
+	printf("\n");
+	printf("\n");
+	Arbitrary_Code_Guard(false);
+	printf("\n");
+	All_Allocation_Actions();
 
-	AllocateRWX();
-	AllocateRW();
-	AllocateRX();
-	AllocateX();
-	AllocateR();
-
-	AllocateRW_Then_RX();
-
-	printf("Press enter to exit\n");
+	printf("\n\n\nPress enter to exit\n");
 	char enter = 0;
 	while (enter != '\r' && enter != '\n') { enter = getchar(); }
 	return 0;
